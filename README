@@ -1,0 +1,33 @@
+This is a small micro-benchmark to highlight performance impact of denormalized floating point values 
+on program performance. The code and the two binary input files (checkpointLarge and chackpointSmall) 
+have been extracted from RAxML. We stumbled over this problem when observing a performance bug 
+(same input data size, but significantly different run-times) when running the Evolutionary Placement algorithm.
+
+The computations are just a for-loop doing some floating point operations over a vector (an ancetsral phylogenetic
+probability vector). 
+
+The checkpoinLarge input data generates denormalized floating point values and can therefore run longer 
+if the exceptions are not ignored.
+
+There are two Makefiles:
+
+Makefile.micro will generate an executable called micro that does not ignore floating point numbers.
+
+Makefile.micro-ignore will generate an executable that ignores these exceptions and therefore 
+requires almost the same execution time for the two input datasets.
+
+Example invocations on my laptop Intel(R) Core(TM) i7-2620M CPU @ 2.70GHz running Ubuntu and using gcc 4.5.2.
+The output is the run time for computing these vectors in seconds.
+
+stamatak@exelixis:~/Desktop/GIT/denormalizedFloatingPointNumbers$ ./micro
+Large: 0.051161
+Small: 0.016829
+stamatak@exelixis:~/Desktop/GIT/denormalizedFloatingPointNumbers$ ./micro-ignore 
+Large: 0.029944
+Small: 0.017007
+
+Please also have a look at the following paper for background reading:
+
+Björndalen J., Anshus O. Trusting floating point benchmarks-are your benchmarks really data-independent? 
+Applied Parallel Computing. State of the art in Scientific Computing 2010; pp 178-188, Springer.
+

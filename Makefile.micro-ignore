@@ -1,0 +1,24 @@
+# Makefile August 2006 by Alexandros Stamatakis
+# Makefile cleanup October 2006, Courtesy of Peter Cordes <peter@cordes.ca>
+
+CC = gcc 
+
+CFLAGS = -D__SIM_SSE3 -D_CATCH -msse3 -D_GNU_SOURCE -O2 -fomit-frame-pointer -funroll-loops
+
+LIBRARIES = -lm
+
+RM = rm -f
+
+objs    = micro.o 
+
+all : mymicro
+
+mymicro : $(objs)
+	$(CC) -o micro-ignore $(objs) $(LIBRARIES) 
+
+
+micro.o : micro.c $(GLOBAL_DEPS)
+
+
+clean : 
+	$(RM) *.o micro-ignore
